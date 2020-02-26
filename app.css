@@ -16,3 +16,8 @@ body {
 #source {
   display: none;
 }
+
+.e-28px, .e-56px, .e-112px, .b-18px, .b-36px, .b-72px {
+  display: inline-block;
+  vertical-align: top;
+}
