@@ -36,7 +36,7 @@ croppedImg.addEventListener('load', () => {
       alpha: true,
     });
   });
-  document.getElementById("downloadTrigger").disabled=false;
+  document.getElementById("downloadTrigger").hidden=false;
 });
 
 body.ondragover = (e) => {
