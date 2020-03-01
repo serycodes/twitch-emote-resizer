@@ -21,3 +21,12 @@ body {
   display: inline-block;
   vertical-align: top;
 }
+
+.modal-dialog, .modal-content {
+  height: 80%;
+}
+
+.modal-body {
+  max-height:calc(100% -120px);
+  padding: 0rem;
+}

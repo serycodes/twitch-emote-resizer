@@ -1,5 +1,5 @@
 var pica = pica();
-var cropper, filename, filetype;
+var cropper, filename, filetype, refresh = false;
 var URL = window.URL || window.webkitURL;
 
 var body = document.querySelector('body');
@@ -15,19 +15,25 @@ var canvases = [
 ];
 
 sourceImg.addEventListener('load', () => {
-  cropper = new Cropper(sourceImg, {
-    aspectRatio: 1/1,
-    viewMode: 1,
-    autoCrop: true,
-    autoCropArea: 1
-  })
-  document.getElementById("hideCropper").hidden=false;
+  refresh=true;
+  $("#cropModal").modal();
 });
 
-
-sourceImg.addEventListener('crop', (event) => {
-  croppedImg.src = cropper.getCroppedCanvas().toDataURL(filetype)
-});
+$('#cropModal').on('shown.bs.modal', function (e) {
+  if(refresh){
+    if(cropper)(cropper.destroy())
+    cropper = new Cropper(sourceImg, {
+      aspectRatio: 1/1,
+      viewMode: 1,
+      autoCrop: true,
+      autoCropArea: 1
+    })
+    sourceImg.addEventListener('crop', (event) => {
+      croppedImg.src = cropper.getCroppedCanvas().toDataURL(filetype)
+    });
+  }
+  refresh=false;
+})
 
 croppedImg.addEventListener('load', () => {
   canvases.forEach((e) => {
@@ -37,6 +43,7 @@ croppedImg.addEventListener('load', () => {
     });
   });
   document.getElementById("downloadTrigger").hidden=false;
+  document.getElementById("recropBtn").hidden=false;
 });
 
 body.ondragover = (e) => {
@@ -48,7 +55,6 @@ body.ondrop = (e) => {
   console.log(e.dataTransfer.files);
   filename = e.dataTransfer.files[0].name.replace(/\.[^/.]+$/, "");
   filetype = e.dataTransfer.files[0].type;
-  cropper != null ? cropper.destroy() : null;
   canvases.forEach((c) => {
     c.getContext("2d").clearRect(0,0,c.width,c.height);
   })
@@ -71,9 +77,3 @@ var downloadAll = async () => {
   });
 
 }
-
-var hideCropper = () => {
-  document.getElementById("hideCropper").hidden=true;
-  cropper.destroy();
-}
-

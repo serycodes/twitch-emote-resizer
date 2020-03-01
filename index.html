@@ -2,17 +2,37 @@
 <html>
 <head>
   <title>Twitch Emote Resizer</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha256-L/W5Wfqfa0sdBNIKN9cG6QA5F2qx4qICmU2VgLruv9Y=" crossorigin="anonymous" />
   <link rel="stylesheet" type="text/css" href="./app.css">
 </head>
 <body>
   <div class="content">
     <h1>Twitch Emote Resizer</h1>
     <p>
-      <p style="font-weight: bold;">Drag an image anywhere on this page. This will bring up a cropper you can use to crop your emote. After cropping, it will resize the image into the sizes Twitch requires for emotes and/or sub badges. You can right-click the resized images to download them as a PNG, or hit Download All to download them in a zip file.</p>All image processing is done client-side, no image data is ever sent anywhere else.
+      <p style="font-weight: bold;">Drag an image anywhere on this page. This will bring up a cropper you can use to crop your emote. After cropping, it will resize the image into the sizes Twitch requires for emotes and/or sub badges. You can right-click the resized images to download them as a PNG, or hit Download All to download them in a zip file.</p>
+      All image processing is done client-side, no image data is ever sent anywhere else.
     </p>
-    <img id="source"/>
-    <button id="hideCropper" class="hideCropper" onclick="hideCropper()" name="Hide Cropper" hidden>Done</button>
-    <img id="cropped"/>
+
+    <div class="modal fade" id="cropModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content bg-dark">
+          <div class="modal-header">
+            <h5 class="modal-title" id="cropModalTitle">Crop your Emote</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <img id="source"/>
+            <img id="cropped"/>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Done</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="emotes">
       <h2>Emotes</h2>
       <div class="e-28px">
@@ -43,8 +63,11 @@
         <canvas id="c72" width="72" height="72"></canvas>
       </div>
     </div>
-    <button id="downloadTrigger" class="download" onclick="downloadAll()" name="Download All" hidden>Download All</button>
+    <button id="downloadTrigger" type="button" class="btn btn-primary" onclick="downloadAll()" name="Download All" hidden>Download All</button>
+    <button id="recropBtn" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#cropModal" hidden>Recrop</button>
   </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.slim.min.js" integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha256-WqU1JavFxSAMcLP2WIOI+GB2zWmShMI82mTpLDcqFUg=" crossorigin="anonymous"></script>
   <script type="text/javascript" src="https://unpkg.com/pica/dist/pica.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.6/cropper.min.js" integrity="sha256-EuV9YMxdV2Es4m9Q11L6t42ajVDj1x+6NZH4U1F+Jvw=" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.6/cropper.min.css" integrity="sha256-cZDeXQ7c9XipzTtDgc7DML5txS3AkSj0sjGvWcdhfns=" crossorigin="anonymous" />
