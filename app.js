@@ -46,7 +46,7 @@ body.ondragover = (e) => {
 body.ondrop = (e) => {
   e.preventDefault();
   console.log(e.dataTransfer.files);
-  filename = e.dataTransfer.files[0].name;
+  filename = e.dataTransfer.files[0].name.replace(/\.[^/.]+$/, "");
   filetype = e.dataTransfer.files[0].type;
   cropper != null ? cropper.destroy() : null;
   canvases.forEach((c) => {
@@ -59,7 +59,7 @@ var downloadAll = async () => {
   var zip = new JSZip();
   var promises = canvases.map(async (c, id) => {
     var blobData = await new Promise(resolve => c.toBlob(resolve));
-    zip.file(c.width + "-" + filename, blobData)
+    zip.file(c.width + "-" + filename + ".png", blobData)
   })
 
   await Promise.all(promises);
